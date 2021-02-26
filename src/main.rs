@@ -32,7 +32,7 @@ fn get_matches() -> clap::ArgMatches<'static> {
         .version("0.1.0")
         .visible_alias("do-stuff")
         .author("Ben Mefteh F. <benmeft0@gmail.com>")
-        .about("Move (rename) SOURCE to DEST, and redirect all ot its symbolic \
+        .about("Move (or rename) SOURCE to DEST, and redirect all ot its symbolic \
                 links inside of LINKS_DIRECTORY")
         .arg(
             Arg::with_name("SOURCE")

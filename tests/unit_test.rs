@@ -56,7 +56,7 @@ fn test_find_links() {
         let ok = same_vec_items(expect_link_paths, &result_link_paths);
         //assert_eq!(*expect_link_paths, result_link_paths);
         let err_msg = format!(
-            "Expected: {:#?}\nResult: {:#?}",
+            "\nExpected: {:#?}\nResult: {:#?}\n",
             expect_link_paths, result_link_paths
         );
         assert!(ok, err_msg);
