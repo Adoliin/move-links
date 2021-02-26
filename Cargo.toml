@@ -2,14 +2,14 @@
 name = "move-links"
 version = "0.1.0"
 authors = ["Adolin <benmeft0@gamil.com>"]
+description = "CLI utility to move (or rename) your files to a new location and redirect all of its symbolic links, to the new path (or name)"
+license = "MIT"
 edition = "2018"
 
 [[bin]]
 bench = false
 path = "src/main.rs"
 name = "mvl"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 path-clean = "0.1.0"
