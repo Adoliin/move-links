@@ -30,8 +30,6 @@ impl Paths {
         }
         if pb_dest_path.exists() {
             if pb_dest_path.is_dir() {
-                print!("{:#?}", pb_dest_path);
-                print!("{:#?}", pb_src_path);
                 pb_dest_path.push(pb_src_path.file_name().unwrap());
             } else {
                 return Err(format!(
