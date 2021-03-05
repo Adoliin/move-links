@@ -4,3 +4,12 @@
 
 pub mod cli_utils;
 pub mod paths;
+
+pub struct Config {
+    pub verbose: bool,
+}
+impl Config {
+    pub fn new(verbose: bool) -> Config {
+        Config { verbose }
+    }
+}

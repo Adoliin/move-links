@@ -1,6 +1,5 @@
-//#![allow(unused)]
+use move_links::Config;
 mod cli_utils;
-
 mod paths;
 use paths::Paths;
 
@@ -12,19 +11,23 @@ fn main() {
     let links_dir_raw = matches.value_of("LINKS_DIRECTORY").unwrap();
     let src_path_raw = matches.value_of("SOURCE").unwrap();
     let dest_path_raw = matches.value_of("DEST").unwrap();
-
+    let verbose = match matches.occurrences_of("VERBOSE") {
+        0 => false,
+        _ => true,
+    };
     let paths = Paths::new(links_dir_raw, src_path_raw, dest_path_raw).unwrap_or_else(|err| {
         println!("Error in arguments: {}", err);
         process::exit(1);
     });
-    let links = cli_utils::find_links(&paths.src_path, &paths.links_dir);
+
+    let config = Config::new(verbose);
+
+    let links = cli_utils::find_links(&paths.src_path, &paths.links_dir, &config);
     match links {
-        Some(links) => cli_utils::redirect_links(&links, &paths.dest_path),
-        None => {
-            println!("No links were found in {}", links_dir_raw);
-        }
+        Some(links) => cli_utils::redirect_links(&links, &paths.dest_path, &config),
+        None => (),
     };
-    cli_utils::move_link(&paths.src_path, &paths.dest_path);
+    cli_utils::move_link(&paths.src_path, &paths.dest_path, &config);
 }
 
 fn get_matches() -> clap::ArgMatches<'static> {
@@ -32,8 +35,10 @@ fn get_matches() -> clap::ArgMatches<'static> {
         .version("0.1.0")
         .visible_alias("do-stuff")
         .author("Ben Mefteh F. <benmeft0@gmail.com>")
-        .about("Move (or rename) SOURCE to DEST, and redirect all ot its symbolic \
-                links inside of LINKS_DIRECTORY")
+        .about(
+            "Move (or rename) SOURCE to DEST, and redirect all ot its symbolic \
+                links inside of LINKS_DIRECTORY",
+        )
         .arg(
             Arg::with_name("SOURCE")
                 .help("Source file or directory")
@@ -53,6 +58,12 @@ fn get_matches() -> clap::ArgMatches<'static> {
                 .short("-d")
                 .long("links-dir")
                 .takes_value(true),
+        )
+        .arg(
+            Arg::with_name("VERBOSE")
+                .help("Show what is move-link is executing under the hood")
+                .short("-v")
+                .long("verbose"),
         )
         .get_matches()
 }

@@ -1,10 +1,11 @@
 //mod paths;
-use move_links::{cli_utils, paths::Paths};
+use move_links::{cli_utils, paths::Paths, Config};
 use std::{env, process};
 
 #[test]
 fn test_find_links() {
     init_test_dir();
+    let config = Config::new(false);
     let cwd = get_cwd();
     let path_list = vec![
         //files
@@ -51,8 +52,11 @@ fn test_find_links() {
     for path in path_list.iter() {
         let src_path = &path.0;
         let expect_link_paths = &path.1;
-        let result_link_paths =
-            cli_utils::find_links(src_path, &format!("{}/test-dir", cwd)).unwrap();
+        let result_link_paths = cli_utils::find_links(
+            src_path,
+            &format!("{}/test-dir", cwd),
+            &config,
+        ).unwrap();
         let ok = same_vec_items(expect_link_paths, &result_link_paths);
         //assert_eq!(*expect_link_paths, result_link_paths);
         let err_msg = format!(
